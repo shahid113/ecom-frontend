@@ -17,6 +17,10 @@ import { OrdersComponent } from './orders/orders.component';
 import { UsersComponent } from './users/users.component';
 import { ViewOrdersComponent } from './view-orders/view-orders.component';
 import { NgxPrintModule } from 'ngx-print';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorInterceptor } from '../error.interceptor';
+import { RequestInterceptor } from '../request.interceptor';
+
 
 
 @NgModule({
@@ -38,8 +42,25 @@ import { NgxPrintModule } from 'ngx-print';
     FormsModule,
     NgbModule,
     NgxPaginationModule,
-    NgxPrintModule
+    NgxPrintModule,
+    HttpClientModule,
     
+  ],
+  providers : [
+
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass:ErrorInterceptor,
+      multi:true
+   },
+
+   
+   {
+     provide:HTTP_INTERCEPTORS,
+     useClass:RequestInterceptor,
+     multi:true
+  },
+
   ]
 })
 export class AdminModule { }
